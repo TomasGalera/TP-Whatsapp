@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        th, td {
+          border:1px solid black;
+          border-style: solid;
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Pilotos</h1>
+    <button onclick="llamadoAlBackend()">Ver Tabla</button>
+    <p>Nombre</p>
+    <input id="nombre">
+    <p>Apellido</p>
+    <input id="apellido">
+    <p>Escuderia</p>
+    <input id="escuderia">
+    <p>Numero</p>
+    <input id="numero" type="number">
+    <p>Nacionalidad</p>
+    <input id="nacionalidad">
+    <p>Nacimiento (AA-MM-DD)</p>
+    <input id="nacimiento">
+    <p>Puntos</p>
+    <input id="puntos" type="number">
+    <p>ID</p>
+    <input id="id" type="number">
+    <button onclick="postPiloto()" style="margin: auto auto 30px auto;">Enviar al POST</button>
+    <table style="width:100%" id="table">
+      
+    </table>
+    <script src="dom copy.js">
+    </script>
+</body>
+</html>

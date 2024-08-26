@@ -1,0 +1,21 @@
+{
+  "name": "creacion_primer_servidor",
+  "version": "1.0.0",
+  "description": "Mi primer servidor",
+  "main": "indextrabajo.js",
+  "scripts": {
+    "test": "nodemon indextrabajo.js"
+  },
+  "keywords": [
+    "ES"
+  ],
+  "author": "Tomas",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.3",
+    "nodemon": "^3.1.0"
+  }
+}

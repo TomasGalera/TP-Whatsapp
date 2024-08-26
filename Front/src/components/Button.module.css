@@ -1,0 +1,17 @@
+.button{
+    width: 200px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.variant_primary{
+    background-color: red;
+}
+
+.variant_secondary{
+    background-color: blue;
+}
+
+.variant_ok{
+    background-color: green;
+}
