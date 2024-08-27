@@ -5,6 +5,7 @@ import Checkbox from "@/components/Checkbox";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css"
 
 export default function home(){
     const [cuenta, setCuenta] = useState(0);
@@ -74,34 +75,47 @@ export default function home(){
     }, [])
 
     return(
-        <div>
-            <Title titulo="Home"/>
-            <h2>Contador: {cuenta}</h2>
-            <h3>Hola {nombre}</h3>
-            <Button onClick={incrementar} text={incrementarText}/>
-            <br/>
-            <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
-            <br/>
-            <Button onClick={cambiarNombre} text="Modificar"/>
-            <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/>
-            <Button variant="primary" text="Primario"/>
-            <Button variant="secondary" text="Secundario"/>
-            <Button variant="ok" text="OK"/>
-            <label htmlFor="checkbox1">Decrementar? </label>
-            <Checkbox onClick={changeChecked} name="checkbox1"/>
-            <Button onClick={handleClick} text="Sin Link"/>
-            <Link href={"/ranking"}>
-                <Button text="Con link"/>
-            </Link>
-            {
-                variant == true &&
-                <>
-                    <br></br>
-                    <br></br>
-                    <label>Login - CONDITIONAL RENDERING</label>
-                </>
-            }
-        </div>
+        <html>
+            <head>
+
+            </head>
+            <body className={styles.body}>
+                <div className={styles.sidebar}>
+                    <h3 className="w3-bar-item">Menu</h3>
+                    <a href="#" className="w3-bar-item w3-button">Link 1</a>
+                    <a href="#" className="w3-bar-item w3-button">Link 2</a>
+                    <a href="#" className="w3-bar-item w3-button">Link 3</a>
+                </div>
+                <div>
+                    <Title titulo="Home"/>
+                    <h2>Contador: {cuenta}</h2>
+                    <h3>Hola {nombre}</h3>
+                    <Button onClick={incrementar} text={incrementarText}/>
+                    <br/>
+                    <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
+                    <br/>
+                    <Button onClick={cambiarNombre} text="Modificar"/>
+                    <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/>
+                    <Button variant="primary" text="Primario"/>
+                    <Button variant="secondary" text="Secundario"/>
+                    <Button variant="ok" text="OK"/>
+                    <label htmlFor="checkbox1">Decrementar? </label>
+                    <Checkbox onClick={changeChecked} name="checkbox1"/>
+                    <Button onClick={handleClick} text="Sin Link"/>
+                    <Link href={"/ranking"}>
+                        <Button text="Con link"/>
+                    </Link>
+                    {
+                        variant == true &&
+                        <>
+                            <br></br>
+                            <br></br>
+                            <label>Login - CONDITIONAL RENDERING</label>
+                        </>
+                    }
+                </div>
+            </body>
+        </html>
     )
 }
 
@@ -109,7 +123,7 @@ export default function home(){
 
 /* export default function home(){
     let cuenta = 0;
-
+    
     function incrementar(){
         cuenta++;
         document.getElementById("contador").innerHTML = "Contador: " + cuenta;
