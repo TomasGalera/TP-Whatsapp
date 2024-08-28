@@ -10,3 +10,8 @@
 .text_color {
   font-size: 30px;
 }
+
+.dark_mode {
+  background: linear-gradient(rgb(44, 44, 44),black);
+  color: rgb(148, 148, 148);
+}

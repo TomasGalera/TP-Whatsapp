@@ -3,14 +3,24 @@
     height: 50px;
     border-radius: 50px;
     align-items: center;
+    border: 2px solid red;
+    background-color: antiquewhite;
+}
+
+.button:hover {
+    border-color: green;
+}
+
+.button:active {
+    border-color: rgb(208, 255, 0);
 }
 
 .variant_claro{
-    background-color: red;
+    background-color: rgb(15, 179, 15);
 }
 
 .variant_oscuro{
-    background-color: blue;
+    background-color: green;
 }
 
 .variant_ok{

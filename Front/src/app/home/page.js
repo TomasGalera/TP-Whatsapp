@@ -2,6 +2,7 @@
 import Button from "@/components/Button";
 import Title from "@/components/Title"
 import Checkbox from "@/components/Checkbox";
+import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,24 +10,10 @@ import styles from "./page.module.css";
 import Image from "next/image";
 
 export default function home(){
-    const [cuenta, setCuenta] = useState(0);
-    const [nombre, setNombre] = useState("Anonimo");
-    const [incrementarText, setIncrementarText] = useState("Incrementar");
     const [checked, setChecked] = useState(false);
     const [variant, setVariant] = useState(false)
     const router = useRouter();
-
-    function incrementar(){
-        if(checked === true){
-            setCuenta(cuenta - 1);
-        } else (
-            setCuenta(cuenta + 1)
-        )
-    }
-
-    function cambiarNombre(){
-        setNombre(document.getElementById("ingresoNombre").value)
-    }
+    const [tema, setTema] = useState("claro")
 
     function changeChecked(){
         if (checked === false){
@@ -54,6 +41,16 @@ export default function home(){
         }
     }
 
+    function modoOscuro() {
+        var element = document.body;
+        element.classList.toggle(styles.dark_mode);
+        if (tema == "claro"){
+            setTema("oscuro")
+        } else {
+            setTema("claro")
+        }
+    }
+
     useEffect(
         () => {
             // alert("Me ejecuto al principio")
@@ -61,11 +58,12 @@ export default function home(){
         },
         []
     )
+    /* Se ejecuta cuando cambia una variable
     useEffect(
-        ()=>{
-            setCuenta(cuenta + 5)
-        },[nombre]
-    )
+         ()=>{
+             setCuenta(cuenta + 5)
+         },[nombre]
+    ) */
 
     useEffect(() => {
         fetch('http://localhost:3001/saludo')
@@ -86,23 +84,26 @@ export default function home(){
                 </div>
                 <div >
                     <Title titulo="Home"/>
-                    <h2>Contador: {cuenta}</h2>
-                    <h3>Hola {nombre}</h3>
-                    <Button onClick={incrementar} text={incrementarText}/>
+                    <h2>Contador:</h2>
+                    <h3>Hola</h3>
+                    <Button onClick={modoOscuro}/>
                     <br/>
                     <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
                     <br/>
-                    <Button onClick={cambiarNombre} text="Modificar"/>
-                    <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/>
-                    <Button variant="primary" text="Primario"/>
-                    <Button variant="secondary" text="Secundario"/>
-                    <Button variant="ok" text="OK"/>
+                    <Button  text="Modificar"/>
+                    {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
+                    <Button variant={tema} text="Primario"/>
+                    <Button variant={tema} text="Secundario"/>
+                    <Button variant={tema} text="OK"/>
                     <label htmlFor="checkbox1">Decrementar? </label>
                     <Checkbox onClick={changeChecked} name="checkbox1"/>
                     <Button onClick={handleClick} text="Sin Link"/>
                     <Link href={"/ranking"}>
                         <Button text="Con link"/>
                     </Link>
+                    <Input id={1} variant={"primary"}/>
+                    <Input id={2} variant={"secondary"}/>
+                    <Input id={3}/>
                     {
                         variant == true &&
                         <>
