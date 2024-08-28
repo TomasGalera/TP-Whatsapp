@@ -1,6 +1,12 @@
 "use client"
 import clsx from "clsx"
 import styles from "./Button.module.css"
+import Image from "next/image"
+
+const imageStyle = {
+    height: '50px',
+    width: 'auto',
+}
 //PROPS
 // export default function Button({props}){
 //     return(
@@ -19,7 +25,7 @@ import styles from "./Button.module.css"
 //     )
 // }
 
-export default function Button({onClick, text, variant}){
+export default function Button({onClick, variant}){
     return(
         <button className={
             clsx({
@@ -28,6 +34,11 @@ export default function Button({onClick, text, variant}){
                 [styles.variant_secondary]: variant == "secondary",
                 [styles.variant_ok]: variant == "ok",
             })
-        } onClick={onClick}>{text}</button>
+        } onClick={onClick}><Image
+        src="/enviar.png"
+        width={30}
+        height={30}
+        alt="Picture of the author"
+      /></button>
     )
 }

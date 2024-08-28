@@ -5,7 +5,8 @@ import Checkbox from "@/components/Checkbox";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css"
+import styles from "./page.module.css";
+import Image from "next/image";
 
 export default function home(){
     const [cuenta, setCuenta] = useState(0);
@@ -75,18 +76,15 @@ export default function home(){
     }, [])
 
     return(
-        <html>
-            <head>
-
-            </head>
-            <body className={styles.body}>
+        <>
+            <article>
                 <div className={styles.sidebar}>
                     <h3 className="w3-bar-item">Menu</h3>
                     <a href="#" className="w3-bar-item w3-button">Link 1</a>
                     <a href="#" className="w3-bar-item w3-button">Link 2</a>
                     <a href="#" className="w3-bar-item w3-button">Link 3</a>
                 </div>
-                <div>
+                <div >
                     <Title titulo="Home"/>
                     <h2>Contador: {cuenta}</h2>
                     <h3>Hola {nombre}</h3>
@@ -114,8 +112,8 @@ export default function home(){
                         </>
                     }
                 </div>
-            </body>
-        </html>
+            </article>
+        </>
     )
 }
 
