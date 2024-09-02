@@ -75,45 +75,43 @@ export default function home(){
 
     return(
         <>
-            <article>
-                <div className={styles.sidebar}>
-                    <h3 className="w3-bar-item">Menu</h3>
-                    <a href="#" className="w3-bar-item w3-button">Link 1</a>
-                    <a href="#" className="w3-bar-item w3-button">Link 2</a>
-                    <a href="#" className="w3-bar-item w3-button">Link 3</a>
-                </div>
-                <div >
-                    <Title titulo="Home"/>
-                    <h2>Contador:</h2>
-                    <h3>Hola</h3>
-                    <Button onClick={modoOscuro}/>
-                    <br/>
-                    <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
-                    <br/>
-                    <Button  text="Modificar"/>
-                    {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
-                    <Button variant={tema} text="Primario"/>
-                    <Button variant={tema} text="Secundario"/>
-                    <Button variant={tema} text="OK"/>
-                    <label htmlFor="checkbox1">Decrementar? </label>
-                    <Checkbox onClick={changeChecked} name="checkbox1"/>
-                    <Button onClick={handleClick} text="Sin Link"/>
-                    <Link href={"/ranking"}>
-                        <Button text="Con link"/>
-                    </Link>
-                    <Input id={1} variant={"primary"}/>
-                    <Input id={2} variant={"secondary"}/>
-                    <Input id={3}/>
-                    {
-                        variant == true &&
-                        <>
-                            <br></br>
-                            <br></br>
-                            <label>Login - CONDITIONAL RENDERING</label>
-                        </>
-                    }
-                </div>
-            </article>
+            <div className={styles.sidebar}>
+                <h3 className="w3-bar-item">Menu</h3>
+                <a href="#" className="w3-bar-item w3-button">Link 1</a>
+                <a href="#" className="w3-bar-item w3-button">Link 2</a>
+                <a href="#" className="w3-bar-item w3-button">Link 3</a>
+            </div>
+            <div >
+                <Title titulo="Home"/>
+                <h2>Contador:</h2>
+                <h3>Hola</h3>
+                <Button onClick={modoOscuro}/>
+                <br/>
+                <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
+                <br/>
+                <Button  text="Modificar"/>
+                {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
+                <Button variant={tema} text="Primario"/>
+                <Button variant={tema} text="Secundario"/>
+                <Button variant={tema} text="OK"/>
+                <label htmlFor="checkbox1">Decrementar? </label>
+                <Checkbox onClick={changeChecked} name="checkbox1"/>
+                <Button onClick={handleClick} text="Sin Link"/>
+                <Link href={"/ranking"}>
+                    <Button text="Con link"/>
+                </Link>
+                <Input id={1} variant={"primary"}/>
+                <Input id={2} variant={"secondary"}/>
+                <Input id={3}/>
+                {
+                    variant == true &&
+                    <>
+                        <br></br>
+                        <br></br>
+                        <label>Login - CONDITIONAL RENDERING</label>
+                    </>
+                }
+            </div>
         </>
     )
 }
