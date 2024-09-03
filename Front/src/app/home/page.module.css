@@ -1,14 +1,21 @@
 .sidebar{
-  height: 500px;
-  width: 25%;
+  height: 100%;
+  width: 20%;
+  background-color: antiquewhite;
 }
 
 .body {
-  color: red;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
 .text_color {
   font-size: 30px;
+}
+
+.chat {
+  width: 100%;
 }
 
 .dark_mode {
