@@ -9,6 +9,9 @@
 .input {
     background-color: aliceblue;
     border: 2px solid gainsboro;
-    border-radius: 4px;
-    width: 200px;
+    border-radius: 30px;
+    padding: 0 10px 0 10px;
+    width: 75vw;
+    height: 6vh;
+    font-size: 20px;
 }

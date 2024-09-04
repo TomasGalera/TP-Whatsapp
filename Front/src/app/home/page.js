@@ -12,8 +12,8 @@ import styles from "./page.module.css";
 export default function home(){
     const [checked, setChecked] = useState(false);
     const [variant, setVariant] = useState(false)
-    const router = useRouter();
     const [theme, setTheme] = useState("light")
+    const router = useRouter();
 
     function changeChecked(){
         if (checked === false){
@@ -39,6 +39,10 @@ export default function home(){
         } else {
             alert("Contador insuficiente")
         }
+    }
+
+    function sendMessage() {
+        console.log("hola")
     }
 
     function modoOscuro() {
@@ -91,23 +95,31 @@ export default function home(){
                     <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
                     <br/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                    <Button  text="Modificar"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
                     <Button variant={theme} text="Primario"/>
                     <Button variant={theme} text="Secundario"/>
-                    <Button variant={theme} text="OK"/>
                     <label htmlFor="checkbox1">Decrementar? </label>
                     <Checkbox onClick={changeChecked} name="checkbox1"/>
                     <Button onClick={handleClick} text="Sin Link"/>
                     <Link href={"/ranking"}>
                         <Button text="Con link"/>
                     </Link>
-                    <Input id={1} variant={"primary"}/>
-                    <Input id={2} variant={"secondary"}/>
-                    <Input id={3}/>
-                    <div>
+                    <Input id={2} variant={"primary"}/>
+                    <Input id={3} variant={"secondary"}/>
+                    <Input id={4}/>
+                    <div className={styles.bottombar}>
                         <Input id={1} variant={theme}/>
+                        <Button onClick={sendMessage} variant={theme}/>
                     </div>
                     {
                         variant == true &&
@@ -122,21 +134,3 @@ export default function home(){
         </>
     )
 }
-
-
-
-/* export default function home(){
-    let cuenta = 0;
-    
-    function incrementar(){
-        cuenta++;
-        document.getElementById("contador").innerHTML = "Contador: " + cuenta;
-    }
-    return(
-        <div>
-            <Title titulo="Home"/>
-            <h2 id="contador">Contador: {cuenta}</h2>
-            <Button onClick={incrementar} text={"Incrementar"}/>
-        </div>
-    )
-} */
