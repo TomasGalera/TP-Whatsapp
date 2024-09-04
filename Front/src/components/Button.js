@@ -30,8 +30,8 @@ export default function Button({onClick, variant}){
         <button className={
             clsx({
                 [styles.button]: true,
-                [styles.variant_oscuro]: variant == "oscuro",
-                [styles.variant_claro]: variant == "claro",
+                [styles.variant_oscuro]: variant == "dark",
+                [styles.variant_claro]: variant == "light",
                 [styles.variant_ok]: variant == "ok",
             })
         } onClick={onClick}><Image

@@ -1,7 +1,14 @@
-.primary {
+.light {
     background-color: red;
 }
 
-.secondary {
+.dark {
     background-color: blue;
+}
+
+.input {
+    background-color: aliceblue;
+    border: 2px solid gainsboro;
+    border-radius: 4px;
+    width: 200px;
 }

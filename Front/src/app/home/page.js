@@ -13,7 +13,7 @@ export default function home(){
     const [checked, setChecked] = useState(false);
     const [variant, setVariant] = useState(false)
     const router = useRouter();
-    const [tema, setTema] = useState("claro")
+    const [theme, setTheme] = useState("light")
 
     function changeChecked(){
         if (checked === false){
@@ -44,10 +44,10 @@ export default function home(){
     function modoOscuro() {
         var element = document.body;
         element.classList.toggle(styles.dark_mode);
-        if (tema == "claro"){
-            setTema("oscuro")
+        if (theme == "light"){
+            setTheme("dark")
         } else {
-            setTema("claro")
+            setTheme("light")
         }
     }
 
@@ -90,13 +90,13 @@ export default function home(){
                     <br/>
                     <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
                     <br/>
-                    <Message variant="user" message={"Hola como estas?"} name="Tomy"/>
-                    <Message variant="sender" message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Button  text="Modificar"/>
                     {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
-                    <Button variant={tema} text="Primario"/>
-                    <Button variant={tema} text="Secundario"/>
-                    <Button variant={tema} text="OK"/>
+                    <Button variant={theme} text="Primario"/>
+                    <Button variant={theme} text="Secundario"/>
+                    <Button variant={theme} text="OK"/>
                     <label htmlFor="checkbox1">Decrementar? </label>
                     <Checkbox onClick={changeChecked} name="checkbox1"/>
                     <Button onClick={handleClick} text="Sin Link"/>
@@ -106,6 +106,9 @@ export default function home(){
                     <Input id={1} variant={"primary"}/>
                     <Input id={2} variant={"secondary"}/>
                     <Input id={3}/>
+                    <div>
+                        <Input id={1} variant={theme}/>
+                    </div>
                     {
                         variant == true &&
                         <>
