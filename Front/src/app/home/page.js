@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import Title from "@/components/Title"
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
-import Message from "@/components/message";
+import Message from "@/components/Message";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
