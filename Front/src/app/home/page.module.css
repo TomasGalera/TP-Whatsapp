@@ -17,7 +17,8 @@
 
 .chat {
   width: 100%;
-  padding: 0 0 0 17vw;
+  height: fit-content;
+  padding: 12vh 0 13vh 17vw;
 }
 
 .dark_mode {
@@ -32,7 +33,22 @@
   bottom: 0px;
   right: 20px;
   left: 18vw;
-  margin: 30px 0 20px 0;
+  margin: 30px 0 10px 0;
+  width: fit-content;
+  column-gap: 1.8vw;
+  background-color: rgb(255 255 255 / 30%);
+  backdrop-filter: blur(15px);
+  padding: 10px 0 10px 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  right: 20px;
+  left: 18vw;
+  margin: 0px 0 10px 0;
   width: fit-content;
   column-gap: 1.8vw;
   background-color: rgb(255 255 255 / 30%);

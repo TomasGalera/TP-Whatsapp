@@ -14,7 +14,8 @@ export default function home(){
     const [variant, setVariant] = useState(false)
     const [theme, setTheme] = useState("light")
     const router = useRouter();
-
+    const [mensajes,setMensajes] = useState(["1","2","3"])
+    
     function changeChecked(){
         if (checked === false){
             setChecked(true);
@@ -76,17 +77,21 @@ export default function home(){
             console.log(data)
           })
     }, [])
-
     return(
         <>
             <div className={styles.body}>
                 <div className={styles.sidebar}>
+                    <h2 className="w3-bar-item">WhatsApp</h2>
                     <h3 className="w3-bar-item">Menu</h3>
                     <a href="#" className="w3-bar-item w3-button">Link 1</a>
                     <a href="#" className="w3-bar-item w3-button">Link 2</a>
                     <a href="#" className="w3-bar-item w3-button">Link 3</a>
                 </div>
                 <div className={styles.chat}>
+                    <div className={styles.topbar}>
+                        <Input id={1} variant={theme}/>
+                        <Button onClick={sendMessage} variant={theme}/>
+                    </div>
                     <Title titulo="Home"/>
                     <h2>Contador:</h2>
                     <h3>Hola</h3>
@@ -94,6 +99,9 @@ export default function home(){
                     <br/>
                     <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
                     <br/>
+                    {mensajes.map(mensaje =>{
+                        <h1>{mensaje}</h1>
+                    })}
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
@@ -104,9 +112,10 @@ export default function home(){
                     <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
-                    <Button variant={theme} text="Primario"/>
+                    {/* <Button variant={theme} text="Primario"/>
                     <Button variant={theme} text="Secundario"/>
                     <label htmlFor="checkbox1">Decrementar? </label>
                     <Checkbox onClick={changeChecked} name="checkbox1"/>
@@ -116,11 +125,7 @@ export default function home(){
                     </Link>
                     <Input id={2} variant={"primary"}/>
                     <Input id={3} variant={"secondary"}/>
-                    <Input id={4}/>
-                    <div className={styles.bottombar}>
-                        <Input id={1} variant={theme}/>
-                        <Button onClick={sendMessage} variant={theme}/>
-                    </div>
+                    <Input id={4}/> */}
                     {
                         variant == true &&
                         <>
@@ -129,6 +134,10 @@ export default function home(){
                             <label>Login - CONDITIONAL RENDERING</label>
                         </>
                     }
+                </div>
+                <div className={styles.bottombar}>
+                        <Input id={1} variant={theme}/>
+                        <Button onClick={sendMessage} variant={theme}/>
                 </div>
             </div>
         </>
