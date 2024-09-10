@@ -46,12 +46,16 @@
   align-items: center;
   position: fixed;
   top: 0px;
-  right: 20px;
-  left: 18vw;
   margin: 0px 0 10px 0;
-  width: fit-content;
+  width: 100%;
   column-gap: 1.8vw;
   background-color: rgb(255 255 255 / 30%);
   backdrop-filter: blur(15px);
   padding: 10px 0 10px 0;
+}
+
+.pheader {
+  font-weight: 600;
+  font-size: 27px;
+  letter-spacing: 1.7px;
 }

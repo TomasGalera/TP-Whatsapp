@@ -14,7 +14,6 @@ export default function home(){
     const [variant, setVariant] = useState(false)
     const [theme, setTheme] = useState("light")
     const router = useRouter();
-    const [mensajes,setMensajes] = useState(["1","2","3"])
     
     function changeChecked(){
         if (checked === false){
@@ -89,7 +88,7 @@ export default function home(){
                 </div>
                 <div className={styles.chat}>
                     <div className={styles.topbar}>
-                        <Input id={1} variant={theme}/>
+                        <p className={styles.pheader}>Nombre Usuario</p>
                         <Button onClick={sendMessage} variant={theme}/>
                     </div>
                     <Title titulo="Home"/>
@@ -99,9 +98,6 @@ export default function home(){
                     <br/>
                     <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
                     <br/>
-                    {mensajes.map(mensaje =>{
-                        <h1>{mensaje}</h1>
-                    })}
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>

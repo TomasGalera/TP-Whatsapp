@@ -8,8 +8,8 @@ export default function Input({id, variant}) {
         <input className={
             clsx({
                 [styles.input]: true,
-                [styles.light]: variant == "primary",
-                [styles.dark]: variant == "secondary",
+                [styles.light]: variant == "light",
+                [styles.dark]: variant == "dark",
             })
         } id={id} placeholder="Ingrese el mensaje"></input>
     )

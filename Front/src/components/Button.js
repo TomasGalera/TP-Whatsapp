@@ -25,7 +25,7 @@ const imageStyle = {
 //     )
 // }
 
-export default function Button({onClick, variant}){
+export default function Button({onClick, variant, message}){
     return(
         <button className={
             clsx({
@@ -39,6 +39,6 @@ export default function Button({onClick, variant}){
         width={30}
         height={30}
         alt="Picture of the author"
-      /></button>
+      />{message}</button>
     )
 }
