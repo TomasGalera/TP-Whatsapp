@@ -1,0 +1,16 @@
+.button {
+    color: black;
+    background-color: aliceblue;
+    height: 40px;
+    width: 100px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+.button:hover {
+    background-color: rgb(192, 196, 199);
+}
+
+.button:active {
+    background-color: rgb(221, 225, 230);
+}

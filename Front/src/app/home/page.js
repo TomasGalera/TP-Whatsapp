@@ -4,6 +4,7 @@ import Title from "@/components/Title"
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
 import Message from "@/components/Message";
+import Button_theme from "@/components/Button_theme";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,8 @@ export default function home(){
     const [checked, setChecked] = useState(false);
     const [variant, setVariant] = useState(false)
     const [theme, setTheme] = useState("light")
+    const [contactName, setContactName] = useState("Nombre Usuario")
+    const [actualChat, setActualChat] = useState(null)
     const router = useRouter();
     
     function changeChecked(){
@@ -26,6 +29,39 @@ export default function home(){
             setVariant(false)
         }
     }
+
+
+
+    const chats = [
+        { id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy"}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy"}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy"}]},
+        { id: 2, name: "María García", messages: [] },
+        { id: 3, name: "Carlos Rodríguez", messages: [] }
+    ];
+    
+    function loadChatList() {
+        const chatList = document.getElementById('chatList');
+        if (!chatList) return;
+        chatList.innerHTML = "";
+        chats.forEach(chat => {
+            const chatItem = document.createElement('div');
+            chatItem.className = styles.chats;
+            chatItem.textContent = chat.name;
+            chatItem.onclick = () => selectChat(chat);
+            chatList.appendChild(chatItem);
+        });
+    }
+    
+    function selectChat(chat) {
+        setContactName(chat.name);
+        setActualChat(chat.id)
+    }
+    
+    useEffect(() => {
+        loadChatList();
+    }, []);
+
+
+
 
     function handleClick(){
         // Aca va la lógica para redirigir, por ejemplo lógica login
@@ -80,25 +116,33 @@ export default function home(){
         <>
             <div className={styles.body}>
                 <div className={styles.sidebar}>
-                    <h2 className="w3-bar-item">WhatsApp</h2>
-                    <h3 className="w3-bar-item">Menu</h3>
-                    <a href="#" className="w3-bar-item w3-button">Link 1</a>
-                    <a href="#" className="w3-bar-item w3-button">Link 2</a>
-                    <a href="#" className="w3-bar-item w3-button">Link 3</a>
-                </div>
-                <div className={styles.chat}>
-                    <div className={styles.topbar}>
-                        <p className={styles.pheader}>Nombre Usuario</p>
-                        <Button onClick={sendMessage} variant={theme}/>
+                    <h2 className={styles.whatsapp}>WhatsApp</h2>
+                    <h3 className={styles.chattitle}>Chats</h3>
+                    <div id="chatList">
+
                     </div>
-                    <Title titulo="Home"/>
-                    <h2>Contador:</h2>
-                    <h3>Hola</h3>
-                    <Button onClick={modoOscuro}/>
-                    <br/>
-                    <input type="text" placeholder="Ingrese nombre" id="ingresoNombre"></input>
-                    <br/>
-                    <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                </div>
+                <div className={styles.topbar}>
+                    <p className={styles.pheader}>{contactName}</p>
+                    <Button_theme onClick={modoOscuro}/>
+                </div>
+                <div className={styles.chat} id="chat">
+                    {/* {chats.message.map((msg) =>
+                        <Message id={msg.id} variant={msg.variant} theme={theme} message={msg.message}/>
+                    )} */}
+
+                    {chats.map(chat => (
+                        chat.messages.length > 0 && chat.id === actualChat ? (
+                            chat.messages.map((msg) => (
+                                <Message key={msg.id} variant={msg.variant} theme={theme} message={msg.message} name={msg.name}/>
+                            ))
+                        ) : (
+                            <></>
+                        )
+                    ))}
+
+
+                    {/* <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
@@ -109,7 +153,7 @@ export default function home(){
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
                     <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
+                    <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/> */}
                     {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
                     {/* <Button variant={theme} text="Primario"/>
                     <Button variant={theme} text="Secundario"/>

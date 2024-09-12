@@ -9,9 +9,9 @@ export default function Message({variant, name, message, date, theme}) {
             clsx({
                 [styles.message]: true,
                 [styles.primary]: variant == "user" && theme == "light",
-                [styles.secondary]: variant == "sender" && theme == "light",
+                [styles.secondary]: variant == "other" && theme == "light",
                 [styles.primary_dark]: variant == "user" && theme == "dark",
-                [styles.secondary_dark]: variant == "sender" && theme == "dark"
+                [styles.secondary_dark]: variant == "other" && theme == "dark"
             })
         }>
             <h6>{name}</h6>
