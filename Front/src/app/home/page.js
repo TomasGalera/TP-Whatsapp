@@ -51,11 +51,12 @@ export default function home(){
         while (i < users.length -1 && users[i].username != username && users[i].password != password) {
             i++
         }
-        if (users[i].username != username && users[i].password != password) {
+        if (users[i].username != username) {
             let register = new Users(username, password)
             users.push(register)
-            setActualUser([users[i].id, users[i].username])
+            setActualUser([register.id, register.username])
             alert("Registro realizado correctamente")
+            console.log(actualUser)
             setUsername("")
             setPassword("")
         } else {
