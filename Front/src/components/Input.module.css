@@ -9,9 +9,9 @@
 
 .light {
     background-color: aliceblue;
-    color: red;
+    color: black;
 }
 
 .dark {
-    background-color: blue;
+    background-color: rgb(53, 53, 53);
 }

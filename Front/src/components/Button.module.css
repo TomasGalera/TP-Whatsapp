@@ -3,16 +3,17 @@
     height: 50px;
     border-radius: 50px;
     align-items: center;
-    border: 2px solid red;
+    border: 0;
     background-color: antiquewhite;
 }
 
 .button:hover {
-    border-color: green;
+    background-color: rgb(65, 156, 65);
 }
 
 .button:active {
-    border-color: rgb(208, 255, 0);
+    background-color: rgb(83, 206, 83);
+
 }
 
 .variant_claro{
