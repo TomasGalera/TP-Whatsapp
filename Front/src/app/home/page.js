@@ -10,13 +10,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import clsx from "clsx";
 
 export default function home(){
     const [checked, setChecked] = useState(false);
-    const [variant, setVariant] = useState(false)
-    const [theme, setTheme] = useState("light")
-    const [contactName, setContactName] = useState("Nombre Usuario")
-    const [actualChat, setActualChat] = useState(null)
+    const [variant, setVariant] = useState(false);
+    const [theme, setTheme] = useState("light");
+    const [contactName, setContactName] = useState("Nombre Usuario");
+    const [actualChat, setActualChat] = useState(null);
     const [message, setMessage] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -208,7 +209,12 @@ export default function home(){
                 actualUser != "" &&
                 <>
                     <div className={styles.body}>
-                        <div className={styles.sidebar}>
+                        <div className={
+                            clsx({
+                                [styles.sidebar]: theme == "light",
+                                [styles.sidebar_dark]: theme == "dark"
+                            })
+                        }>
                             <h2 className={styles.whatsapp}>WhatsApp</h2>
                             <h3 className={styles.chattitle}>Chats</h3>
                             <div id="chatList">

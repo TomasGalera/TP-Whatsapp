@@ -1,7 +1,7 @@
 .message {
     width: fit-content;
     min-width: 20px;
-    max-width: 200px;
+    max-width: 30vw;
     border-radius: 10px;
 }
 
@@ -19,8 +19,9 @@
 }
 
 .primary_dark {
-    background-color: rgb(255, 255, 255);
-    /* background-color: rgb(28, 190, 28); */
+    /* background-color: rgb(255, 255, 255); */
+    background-color: rgb(1, 104, 1);
+    color: rgb(209, 207, 207);
     margin: 20px 50px 0 auto;
     padding: 10px;
 }

@@ -6,12 +6,42 @@
   padding: 10px 15px 10px 15px;
 }
 
+.sidebar_dark {
+  height: 100%;
+  width: 17vw;
+  background-color: rgba(1, 172, 30, 0.3);
+  color: white;
+  position: fixed;
+  padding: 10px 15px 10px 15px;
+}
+
+.sidebar_dark button{
+  position: fixed;
+  bottom: 4vh;
+  padding: 3px;
+  width: 14.3vw;
+  border-radius: 6px;
+  border: 0;
+  height: 3.5vh;
+}
+
+.sidebar_dark button:hover{
+  background-color: antiquewhite;
+}
+
 .sidebar button{
   position: fixed;
   bottom: 4vh;
   padding: 3px;
   width: 14.3vw;
-  /* background-color: antiquewhite; */
+  border: 0;
+  border-radius: 6px;
+  height: 3.5vh;
+  background-color: white;
+}
+
+.sidebar button:hover{
+  background-color: wheat;
 }
 
 .body {
@@ -79,6 +109,7 @@
 
 .chats {
   background-color: rgb(192, 192, 192);
+  color: black;
   margin: 10px 0 5px 0;
   height: 30px;
   align-content: center;
@@ -104,7 +135,8 @@
   text-align: left;
   margin: auto;
   align-items: baseline;
-  background-color: rgb(146, 28, 214);
+  background-color: rgb(33, 139, 23);
+  /* background-color: rgb(146, 28, 214); */
   padding: 7vh 3vw 7vh 3vw;
   border-radius: 25px;
   -webkit-box-shadow: -2px 6px 60px 15px rgba(0,0,0,0.7);
@@ -124,13 +156,15 @@
 .login button {
   width: 10vw;
   font-size: 16px;
-  border: 2px solid rgb(129, 127, 127);
-  border-radius: 5px;
-  background-color: rgb(63, 61, 61);
+  border: 0;
+  border-radius: 8px;
+  background-color: rgb(219, 219, 219);
+  padding: 5px;
 }
 
 .login button:hover {
   background-color: black;
+  background-color: rgb(110, 110, 110);
   cursor: pointer;
 }
 
