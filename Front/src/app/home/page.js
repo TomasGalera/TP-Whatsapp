@@ -1,13 +1,10 @@
 "use client"
 import Button from "@/components/Button";
-import Title from "@/components/Title"
-import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
 import Message from "@/components/Message";
 import Button_theme from "@/components/Button_theme";
 import InputLogin from "@/components/InputLogin";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import clsx from "clsx";
@@ -113,7 +110,6 @@ export default function home(){
     
     useEffect(() => {
         loadChatList();
-        console.log(actualUser)
     }, [actualUser]);
 
 
@@ -180,7 +176,7 @@ export default function home(){
     ) */
 
     useEffect(() => {
-        fetch('http://localhost:3001/saludo')
+        fetch('http://localhost:4000/')
           .then((res) => res.json())
           .then((data) => {
             console.log(data)
