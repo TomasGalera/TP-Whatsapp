@@ -23,7 +23,7 @@ export default function home(){
     const router = useRouter();
 
     const [chats, setChats] = useState([
-        { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy"}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy"}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy"}]},
+        { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
         { userId: 1, id: 2, name: "María García", messages: [] },
         { userId: 1, id: 3, name: "Carlos Rodríguez", messages: [] },
         { userId: 2, id: 4, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy"}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy"}]},

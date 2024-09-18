@@ -70,6 +70,59 @@ app.delete('/login', (req, res) => {
 	res.send(null);
 });
 
+app.get('/getUsers', async function(req,res) {
+	const result = await MySQL.realizarQuery(`SELECT * FROM UsersWA;`);
+	res.send(result);
+});
+
+app.get('/getChats', async function(req,res) {
+	const result = await MySQL.realizarQuery(`SELECT * FROM Chats;`);
+	res.send(result);
+});
+
+app.get('/getMessages', async function(req,res) {
+	const result = await MySQL.realizarQuery(`SELECT * FROM Messages;`);
+	res.send(result);
+});
+
+app.post('/insertChat', async function(req, res) {
+	const userId = req.body.userId;
+	const name = req.body.name;
+	try {
+		const result = MySQL.realizarQuery(`INSERT INTO Chats (userId, name)
+		VALUES ("${userId}", "${name}")`);
+		res.send({message: 'Chat agregado a la tabla', result: result});
+	  } catch (e) {
+		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores
+	  }
+});
+
+app.post('/insertUser', async function(req, res) {
+	const username = req.body.username;
+	const password = req.body.password;
+	try {
+		const result = MySQL.realizarQuery(`INSERT INTO UsersWA (username, password)
+		VALUES ("${username}", "${password}")`);
+		res.send({message: 'Usuario agregado a la tabla', result: result});
+	  } catch (e) {
+		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores
+	  }
+});
+
+app.post('/insertMessage', async function(req, res) {
+	const userId = req.body.userId;
+	const chatId = req.body.chatId;
+	const message = req.body.message;
+	const name = req.body.name;
+	try {
+		const result = MySQL.realizarQuery(`INSERT INTO Messages (name, userId, message, chatId)
+		VALUES ("${name}", "${userId}", "${message}", ${chatId})`);
+		res.send({message: 'Mensasje agregado a la tabla', result: result});
+	  } catch (e) {
+		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores
+	  }
+});
+
 io.on("connection", (socket) => {
 	const req = socket.request;
 
