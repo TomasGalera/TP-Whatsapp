@@ -113,7 +113,8 @@
   margin: 10px 0 5px 0;
   height: 30px;
   align-content: center;
-  padding: 5px;
+  padding: 5px 9px 5px 9px;
+  border-radius: 10px;
 }
 
 .chats:hover {

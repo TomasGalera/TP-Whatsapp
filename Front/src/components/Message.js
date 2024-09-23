@@ -15,7 +15,7 @@ export default function Message({variant, name, message, date, theme}) {
             })
         }>
             <h6>{name}</h6>
-            <p>{message}</p>
+            <p className={styles.mensaje}>{message}</p>
             <p>{date}</p>
         </div>
     )

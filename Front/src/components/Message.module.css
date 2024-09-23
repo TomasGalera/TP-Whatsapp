@@ -3,7 +3,11 @@
     min-width: 20px;
     max-width: 30vw;
     border-radius: 10px;
+    word-wrap: break-word; /*  Permite que las palabras largas se dividan en varias líneas */
+    overflow-wrap: break-word; /* Evita que las palabras largas desborden el contenedor */
+    white-space: pre-wrap; /*  Preserva los saltos de línea y permite que el texto envuelva */
 }
+
 
 .primary {
     background-color: rgb(23, 163, 23);

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import clsx from "clsx";
+import { Instrument_Sans } from "next/font/google";
 
 export default function home(){
     const [checked, setChecked] = useState(false);
@@ -136,6 +137,8 @@ export default function home(){
                 name: actualUser[1]
             };
 
+            insertMessages()
+
             setChats(prevChats => 
                 prevChats.map(chat => 
                     chat.id === actualChat 
@@ -146,6 +149,28 @@ export default function home(){
             setMessage("");
         }
     };
+
+    async function insertMessages(){
+        const data = {
+            name: actualUser[1],
+            userId: actualUser[0],
+            message: message.trim(),
+            chatId: actualChat
+        }
+
+        const response = await fetch('http://127.0.0.1:4000/insertMessage', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) throw new Error('Error en la respuesta de la red');
+
+        const result = await response.json();
+    }
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
