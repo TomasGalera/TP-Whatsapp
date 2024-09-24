@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import clsx from "clsx";
-import { Instrument_Sans } from "next/font/google";
 
 export default function home(){
     const [checked, setChecked] = useState(false);
@@ -24,10 +23,10 @@ export default function home(){
     const router = useRouter();
 
     const [chats, setChats] = useState([
-        { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
+        { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
         { userId: 1, id: 2, name: "María García", messages: [] },
         { userId: 1, id: 3, name: "Carlos Rodríguez", messages: [] },
-        { userId: 2, id: 4, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", name:"Tomy"}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy"}]},
+        { userId: 2, id: 4, name: "Juan", messages: [{id:1, variant: "user", message: "Hola como estas?"}, {id:3, variant: "other", message: "Hola como estas?"}]},
         { userId: 2, id: 5, name: "María García", messages: [] },
         { userId: 2, id: 6, name: "Carlos Rodríguez", messages: [] }
     ]);
@@ -93,6 +92,7 @@ export default function home(){
         const chatList = document.getElementById('chatList');
         if (!chatList) return;
         chatList.innerHTML = "";
+        console.log(actualUser)
         chats.forEach(chat => {
             if (chat.userId == actualUser[0]) {
                 const chatItem = document.createElement('div');
@@ -200,13 +200,13 @@ export default function home(){
          },[nombre]
     ) */
 
-    useEffect(() => {
-        fetch('http://localhost:4000/')
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data)
-          })
-    }, [])
+    // useEffect(() => {
+    //     fetch('http://localhost:4000/')
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         console.log(data)
+    //       })
+    // }, [])
     return(
         <>
             {
@@ -218,7 +218,7 @@ export default function home(){
                             <h3>User</h3>
                             <InputLogin type={"text"} placeholder={"Ingrese su usuario"} onChange={handleUsernameChange} value={username}/>
                             <h3>Password</h3>
-                            <InputLogin type={"text"} placeholder={"Ingrese su contraseña"} onChange={handlePasswordChange} value={password}/>
+                            <InputLogin type={"password"} placeholder={"Ingrese su contraseña"} onChange={handlePasswordChange} value={password}/>
                             <div>
                                 <button onClick={login}>Login</button>
                                 <button onClick={register}>Registrarse</button>
@@ -256,7 +256,7 @@ export default function home(){
                             {chats.map(chat => (
                                 chat.messages.length > 0 && chat.id === actualChat ? (
                                     chat.messages.map((msg) => (
-                                        <Message key={msg.id} variant={msg.variant} theme={theme} message={msg.message} name={msg.name}/>
+                                        <Message key={msg.id} variant={msg.variant} theme={theme} message={msg.message} name={chat.name}/>
                                     ))
                                 ) : (
                                     <></>
@@ -264,24 +264,8 @@ export default function home(){
                             ))}
 
 
-                            {/* <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="user" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/>
-                            <Message variant="sender" theme={theme} message={"Hola como estas?"} name="Tomy"/> */}
-                            {/* <Button variant={cuenta >= 15 ? "ok" : ""} text="Cambiante"/> */}
-                            {/* <Button variant={theme} text="Primario"/>
-                            <Button variant={theme} text="Secundario"/>
-                            <label htmlFor="checkbox1">Decrementar? </label>
-                            <Checkbox onClick={changeChecked} name="checkbox1"/>
-                            <Button onClick={handleClick} text="Sin Link"/>
+                        
+                            {/*
                             <Link href={"/ranking"}>
                                 <Button text="Con link"/>
                             </Link>
