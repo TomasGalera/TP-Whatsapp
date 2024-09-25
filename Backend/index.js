@@ -28,7 +28,7 @@ const server = app.listen(LISTEN_PORT, () => {
 const io = require('socket.io')(server, {
 	cors: {
 		// IMPORTANTE: REVISAR PUERTO DEL FRONTEND
-		origin: "http://localhost:3000",            	// Permitir el origen localhost:3000
+		origin: ["http://localhost:3000","http://localhost:3001"],            	// Permitir el origen localhost:3000
 		methods: ["GET", "POST", "PUT", "DELETE"],  	// Métodos permitidos
 		credentials: true                           	// Habilitar el envío de cookies
 	}
@@ -80,15 +80,21 @@ app.get('/getChats', async function(req,res) {
 	res.send(result);
 });
 
-app.get('/getChatsUsers', async function(req,res) {
+app.post('/getChatsUsers', async function(req,res) {
 	const userId = req.body.userId;
 	const result = await MySQL.realizarQuery(`SELECT Chats_users.chatId, name FROM Chats_users INNER JOIN Chats ON Chats_users.chatId = Chats.chatId WHERE userId = ${userId};`);
-	res.send(result);
+	res.send({chats: result});
 });
 
 app.get('/getMessages', async function(req,res) {
 	const result = await MySQL.realizarQuery(`SELECT * FROM Messages;`);
 	res.send(result);
+});
+
+app.get('/getMessagesChat', async function(req,res) {
+	const chatId = req.body.chatId
+	const result = await MySQL.realizarQuery(`SELECT Messages.userId, chatId, message, username FROM Messages INNER JOIN UsersWA ON UsersWA.userId = Messages.userId WHERE chatId = ${chatId};`);
+	res.send({messages: result});
 });
 
 app.post('/insertChat', async function(req, res) {
