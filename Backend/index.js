@@ -80,6 +80,12 @@ app.get('/getChats', async function(req,res) {
 	res.send(result);
 });
 
+app.get('/getChatsUsers', async function(req,res) {
+	const userId = req.body.userId;
+	const result = await MySQL.realizarQuery(`SELECT Chats_users.chatId, name FROM Chats_users INNER JOIN Chats ON Chats_users.chatId = Chats.chatId WHERE userId = ${userId};`);
+	res.send(result);
+});
+
 app.get('/getMessages', async function(req,res) {
 	const result = await MySQL.realizarQuery(`SELECT * FROM Messages;`);
 	res.send(result);
