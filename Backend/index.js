@@ -13,8 +13,12 @@ const express = require('express');						// Para el manejo del web server
 const bodyParser = require('body-parser'); 				// Para el manejo de los strings JSON
 const MySQL = require('./modulos/mysql');				// Añado el archivo mysql.js presente en la carpeta módulos
 const session = require('express-session');				// Para el manejo de las variables de sesión
+const cors = require('cors');
 
-const app = express();									// Inicializo express para el manejo de las peticiones
+
+const app = express();                                  // Inicializo express para el manejo de las peticiones
+
+app.use(cors());            							// Inicializo express para el manejo de las peticiones
 
 app.use(bodyParser.urlencoded({ extended: false }));	// Inicializo el parser JSON
 app.use(bodyParser.json());
@@ -28,7 +32,7 @@ const server = app.listen(LISTEN_PORT, () => {
 const io = require('socket.io')(server, {
 	cors: {
 		// IMPORTANTE: REVISAR PUERTO DEL FRONTEND
-		origin: ["http://localhost:3000","http://localhost:3001"],            	// Permitir el origen localhost:3000
+		origin: ['http://localhost:3000',"http://localhost:3001"],            	// Permitir el origen localhost:3000
 		methods: ["GET", "POST", "PUT", "DELETE"],  	// Métodos permitidos
 		credentials: true                           	// Habilitar el envío de cookies
 	}
@@ -61,18 +65,30 @@ app.get('/', (req, res) => {
 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
 });
 
-app.post('/login', (req, res) => {
-	console.log(`[REQUEST - ${req.method}] ${req.url}`);
-});
+// app.post('/login', (req, res) => {
+// 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
+// });
 
-app.delete('/login', (req, res) => {
-	console.log(`[REQUEST - ${req.method}] ${req.url}`);
-	res.send(null);
-});
+// app.delete('/login', (req, res) => {
+// 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
+// 	res.send(null);
+// });
 
 app.get('/getUsers', async function(req,res) {
 	const result = await MySQL.realizarQuery(`SELECT * FROM UsersWA;`);
 	res.send(result);
+});
+
+app.post('/login', async function(req,res) {
+	const username = req.body.username
+	const password = req.body.password
+	const result = await MySQL.realizarQuery(`SELECT * FROM UsersWA WHERE username = "${username}" AND password = "${password}";`);
+	if (result === undefined || result.length === 0){
+		res.send({message: "Usuario o contraseña incorrecta"})
+	} else {
+		res.send({user: result, message: "Inicio de sesión correcto"});
+		console.log(result)
+	}
 });
 
 app.get('/getChats', async function(req,res) {

@@ -61,18 +61,54 @@ export default function home(){
         }
     }
 
-    function login() {
-        let i = 0
-        while (i < users.length -1 && users[i].username != username && users[i].password != password) {
-            i++
+
+    async function loginUser() {
+        const data = {
+            username: username,
+            password: password
         }
-        if (users[i].username == username && users[i].password == password) {
-            setActualUser([users[i].id, users[i].username])
-            alert("Inicio de sesión correcto")
-            setUsername("")
-            setPassword("")
+
+        const response = await fetch('http://localhost:4000/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        console.log(result[0])
+    } 
+    
+    async function login() {
+        if (username != "" && password != "") {
+            const data = {
+                username: username,
+                password: password
+            }
+            
+            const response = await fetch('http://localhost:4000/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            
+            if (!response.ok) throw new Error('Error en la respuesta de la red');
+            const result = await response.json();
+            console.log(result)
+            if (result.user){
+                setActualUser([result.user[0].userId, result.user[0].username])
+                alert("Inicio de sesión correcto")
+                setUsername("")
+                setPassword("")
+            } else {
+                alert(result.message)
+            }
         } else {
-            alert("El usuario o la contraseña son incorrectos")
+            alert("Complete la información")
         }
     }
 
