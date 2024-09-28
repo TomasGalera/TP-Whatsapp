@@ -79,6 +79,12 @@ app.get('/getUsers', async function(req,res) {
 	res.send(result);
 });
 
+app.post('/getUser', async function(req,res) {
+	const username = req.body.username
+	const result = await MySQL.realizarQuery(`SELECT * FROM UsersWA WHERE username = "${username}";`);
+	res.send(result);
+});
+
 app.post('/login', async function(req,res) {
 	const username = req.body.username
 	const password = req.body.password
@@ -91,8 +97,23 @@ app.post('/login', async function(req,res) {
 	}
 });
 
-app.get('/getChats', async function(req,res) {
-	const result = await MySQL.realizarQuery(`SELECT * FROM Chats;`);
+app.post('/register', async function(req, res) {
+	const username = req.body.username;
+	const password = req.body.password;
+	const result = await MySQL.realizarQuery(`INSERT INTO UsersWA (username, password)
+	VALUES ("${username}", "${password}")`);
+	const result2 = await MySQL.realizarQuery(`SELECT * FROM UsersWA WHERE username = "${username}";`)
+	if (result2 === undefined || result2.length === 0){
+		res.send({message: 'Hubo un error al seleccionar el usuario'});
+	} else {
+		res.send({message: 'Usuario agregado a la tabla', user: result2});
+	}
+	console.log(result2)
+});
+
+app.post('/getChats', async function(req,res) {
+	const userId = req.body.userId
+	const result = await MySQL.realizarQuery(`SELECT Chats.chatId, userId, name FROM Chats INNER JOIN Chats_users ON Chats_users.chatId = Chats.chatId WHERE userId = ${userId};`);
 	res.send(result);
 });
 
@@ -103,11 +124,12 @@ app.post('/getChatsUsers', async function(req,res) {
 });
 
 app.get('/getMessages', async function(req,res) {
-	const result = await MySQL.realizarQuery(`SELECT * FROM Messages;`);
+	const chatId = req.body.chatId
+	const result = await MySQL.realizarQuery(`SELECT * FROM Messages`);
 	res.send(result);
 });
 
-app.get('/getMessagesChat', async function(req,res) {
+app.post('/getMessagesChat', async function(req,res) {
 	const chatId = req.body.chatId
 	const result = await MySQL.realizarQuery(`SELECT Messages.userId, chatId, message, username FROM Messages INNER JOIN UsersWA ON UsersWA.userId = Messages.userId WHERE chatId = ${chatId};`);
 	res.send({messages: result});
@@ -125,17 +147,7 @@ app.post('/insertChat', async function(req, res) {
 	  }
 });
 
-app.post('/insertUser', async function(req, res) {
-	const username = req.body.username;
-	const password = req.body.password;
-	try {
-		const result = MySQL.realizarQuery(`INSERT INTO UsersWA (username, password)
-		VALUES ("${username}", "${password}")`);
-		res.send({message: 'Usuario agregado a la tabla', result: result});
-	  } catch (e) {
-		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores
-	  }
-});
+
 
 app.post('/insertMessage', async function(req, res) {
 	const userId = req.body.userId;

@@ -31,44 +31,12 @@ export default function home(){
         { userId: 2, id: 6, name: "Carlos Rodríguez", messages: [] }
     ]);
 
-    let userId = 1
-    class Users {
-        constructor(username, password) {
-            this.id = userId;
-            this.username = username;
-            this.password = password;
-            userId++
-        }
-    }
-    
-    let users = [new Users("tomas", "abru"), new Users("a", "a")]
-
-    function register () {
-        let i = 0
-        while (i < users.length -1 && users[i].username != username && users[i].password != password) {
-            i++
-        }
-        if (users[i].username != username) {
-            let register = new Users(username, password)
-            users.push(register)
-            setActualUser([register.id, register.username])
-            alert("Registro realizado correctamente")
-            console.log(actualUser)
-            setUsername("")
-            setPassword("")
-        } else {
-            alert("El usuario ya existe")
-        }
-    }
-
-
-    async function loginUser() {
+    async function register () {
         const data = {
             username: username,
-            password: password
         }
 
-        const response = await fetch('http://localhost:4000/login', {
+        const response = await fetch('http://localhost:4000/getUser', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -76,9 +44,39 @@ export default function home(){
             },
             body: JSON.stringify(data),
         });
+
         const result = await response.json();
-        console.log(result[0])
-    } 
+
+        
+
+        if (result === undefined || result.length === 0){
+            const data1 = {
+                username: username,
+                password: password
+            }
+    
+            const response1 = await fetch('http://localhost:4000/register', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data1),
+            });
+
+            const result1 = await response1.json();
+            
+            
+            if (result1 != undefined || result1.length != 0){
+                setActualUser([result1.user[0].userId, result1.user[0].username])
+                alert("Registro realizado correctamente")
+                setUsername("")
+                setPassword("")
+            }
+        } else {
+            alert("El usuario ya existe")
+        }
+    }
     
     async function login() {
         if (username != "" && password != "") {
@@ -98,7 +96,7 @@ export default function home(){
             
             if (!response.ok) throw new Error('Error en la respuesta de la red');
             const result = await response.json();
-            console.log(result)
+
             if (result.user){
                 setActualUser([result.user[0].userId, result.user[0].username])
                 alert("Inicio de sesión correcto")
@@ -124,20 +122,57 @@ export default function home(){
         setPassword(e.target.value);
     };
 
-    function loadChatList() {
-        const chatList = document.getElementById('chatList');
-        if (!chatList) return;
-        chatList.innerHTML = "";
-        console.log(actualUser)
-        chats.forEach(chat => {
-            if (chat.userId == actualUser[0]) {
-                const chatItem = document.createElement('div');
-                chatItem.className = styles.chats;
-                chatItem.textContent = chat.name;
-                chatItem.onclick = () => selectChat(chat);
-                chatList.appendChild(chatItem);
+    async function loadChatList() {
+        console.log(actualUser.length)
+        if (actualUser.length !== 0){
+            const data = {
+                userId: actualUser[0]
             }
-        });
+            
+            const response = await fetch('http://localhost:4000/getChats', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            
+            if (!response.ok) throw new Error('Error en la respuesta de la red');
+            const result = await response.json();
+            
+            for (let i in result){
+                const data1 = {
+                    chatId: result[i].chatId
+                }
+                
+                const response1 = await fetch('http://localhost:4000/getMessagesChat', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data1),
+                });
+                
+                if (!response1.ok) throw new Error('Error en la respuesta de la red');
+                const result2 = await response1.json();
+            }
+    
+            const chatList = document.getElementById('chatList');
+            if (!chatList) return;
+            chatList.innerHTML = "";
+            console.log(actualUser)
+            chats.forEach(chat => {
+                if (chat.userId == actualUser[0]) {
+                    const chatItem = document.createElement('div');
+                    chatItem.className = styles.chats;
+                    chatItem.textContent = chat.name;
+                    chatItem.onclick = () => selectChat(chat);
+                    chatList.appendChild(chatItem);
+                }
+            });
+        }
     }
     
     function selectChat(chat) {
