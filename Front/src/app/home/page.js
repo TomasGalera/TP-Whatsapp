@@ -412,7 +412,7 @@ export default function home(){
                 newChat == true &&
                 <>
                     <div className={styles.bodyLogin}>
-                        <InputNC
+                        <InputNC />
                     </div>
                 </>
             }
