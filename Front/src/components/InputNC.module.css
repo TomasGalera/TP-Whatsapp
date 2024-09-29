@@ -1,0 +1,10 @@
+.input {
+    border: 2px solid gainsboro;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    width: 30vw;
+    height: 5vh;
+    font-size: 20px;
+    background-color: beige;
+    color: #000;
+}

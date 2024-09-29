@@ -1,0 +1,26 @@
+.button{
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    align-items: center;
+    border: 0;
+    background-color: antiquewhite;
+    margin-top: 7px;
+}
+
+.button:hover {
+    background-color: rgb(65, 156, 65);
+}
+
+.button:active {
+    background-color: rgb(83, 206, 83);
+
+}
+
+.variant_claro{
+    background-color: rgb(15, 179, 15);
+}
+
+.variant_oscuro{
+    background-color: green;
+}

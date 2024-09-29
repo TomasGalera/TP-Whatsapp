@@ -15,7 +15,7 @@
   padding: 10px 15px 10px 15px;
 }
 
-.sidebar_dark button{
+.closeSession_dark {
   position: fixed;
   bottom: 4vh;
   padding: 3px;
@@ -25,11 +25,11 @@
   height: 3.5vh;
 }
 
-.sidebar_dark button:hover{
+.closeSession_dark:hover {
   background-color: antiquewhite;
 }
 
-.sidebar button{
+.closeSession {
   position: fixed;
   bottom: 4vh;
   padding: 3px;
@@ -38,10 +38,12 @@
   border-radius: 6px;
   height: 3.5vh;
   background-color: white;
+  color: black;
 }
 
-.sidebar button:hover{
+.closeSession:hover {
   background-color: wheat;
+  cursor: pointer;
 }
 
 .body {
@@ -115,6 +117,9 @@
   align-content: center;
   padding: 5px 9px 5px 9px;
   border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chats:hover {
@@ -179,4 +184,9 @@
 .bodyLogin {
   display: flex;
   height: 100vh;
+}
+
+.div{
+  display: inline-flex;
+  column-gap: 5vw;
 }

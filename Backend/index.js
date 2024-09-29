@@ -130,7 +130,7 @@ app.get('/getMessages', async function(req,res) {
 });
 
 app.post('/getMessagesChat', async function(req,res) {
-	const chatId = req.body.chatId
+	const chatId = req.body.chatId;
 	const result = await MySQL.realizarQuery(`SELECT Messages.userId, chatId, message, username FROM Messages INNER JOIN UsersWA ON UsersWA.userId = Messages.userId WHERE chatId = ${chatId};`);
 	res.send({messages: result});
 });
@@ -147,16 +147,13 @@ app.post('/insertChat', async function(req, res) {
 	  }
 });
 
-
-
 app.post('/insertMessage', async function(req, res) {
 	const userId = req.body.userId;
 	const chatId = req.body.chatId;
 	const message = req.body.message;
-	const name = req.body.name;
 	try {
-		const result = MySQL.realizarQuery(`INSERT INTO Messages (name, userId, message, chatId)
-		VALUES ("${name}", "${userId}", "${message}", ${chatId})`);
+		const result = MySQL.realizarQuery(`INSERT INTO Messages (userId, message, chatId)
+		VALUES ("${userId}", "${message}", ${chatId})`);
 		res.send({message: 'Mensasje agregado a la tabla', result: result});
 	  } catch (e) {
 		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores

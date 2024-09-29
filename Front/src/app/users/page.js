@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function users(){
     const { socket, isConnected } = useSocket();
     const [message, setMessage] = useState("")
+    let userId1 = 1
 
     useEffect(() => {
         if(!socket) return;
@@ -17,7 +18,9 @@ export default function users(){
         });
 
         socket.on("newMessage", (data) => {
-            console.log("Mensaje de la sala: ", data)
+            if (data.message.userId != userId1){
+                console.log("Mensaje de la sala: ", data)
+            }
         })
 
         return() => {
@@ -34,7 +37,7 @@ export default function users(){
     }
 
     function handleSendMessage(){
-        socket.emit("sendMessage", {message: message})
+        socket.emit("sendMessage", {message: message, userId: userId1})
     }
 
     // function handlerInput(event) {
@@ -47,6 +50,7 @@ export default function users(){
             <Button onClick={handleClick} message={"Prueba"}/>
             <Button onClick={handleJoinChat} message={"Conectar"}/>
             <Button onClick={handleSendMessage} message={"Enviar"}/>
+            <Button onClick={changeUserId} message={"Usuario"}/>
             {/* <input onChange={handlerInput}/> */}
             <input onChange={(event) => setMessage(event.target.value)}/>
         </div>

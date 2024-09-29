@@ -4,14 +4,15 @@ import Input from "@/components/Input";
 import Message from "@/components/Message";
 import Button_theme from "@/components/Button_theme";
 import InputLogin from "@/components/InputLogin";
+import NewChat from "@/components/NewChat";
+import InputNC from "@/components/InputNC";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSocket } from "@/hooks/useSocket";
 import styles from "./page.module.css";
 import clsx from "clsx";
 
 export default function home(){
-    const [checked, setChecked] = useState(false);
-    const [variant, setVariant] = useState(false);
     const [theme, setTheme] = useState("light");
     const [contactName, setContactName] = useState("Nombre Usuario");
     const [actualChat, setActualChat] = useState(null);
@@ -20,15 +21,17 @@ export default function home(){
     const [password, setPassword] = useState("");
     const [actualUser, setActualUser] = useState([]);
 
-    const router = useRouter();
+    let newChat = false
+
+    let user = ""
 
     const [chats, setChats] = useState([
-        { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
-        { userId: 1, id: 2, name: "María García", messages: [] },
-        { userId: 1, id: 3, name: "Carlos Rodríguez", messages: [] },
-        { userId: 2, id: 4, name: "Juan", messages: [{id:1, variant: "user", message: "Hola como estas?"}, {id:3, variant: "other", message: "Hola como estas?"}]},
-        { userId: 2, id: 5, name: "María García", messages: [] },
-        { userId: 2, id: 6, name: "Carlos Rodríguez", messages: [] }
+        // { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
+        // { userId: 1, id: 2, name: "María García", messages: [] },
+        // { userId: 1, id: 3, name: "Carlos Rodríguez", messages: [] },
+        // { userId: 2, id: 4, name: "Juan", messages: [{id:1, variant: "user", message: "Hola como estas?"}, {id:3, variant: "other", message: "Hola como estas?"}]},
+        // { userId: 2, id: 5, name: "María García", messages: [] },
+        // { userId: 2, id: 6, name: "Carlos Rodríguez", messages: [] }
     ]);
 
     async function register () {
@@ -122,8 +125,7 @@ export default function home(){
         setPassword(e.target.value);
     };
 
-    async function loadChatList() {
-        console.log(actualUser.length)
+    async function getChatList() {
         if (actualUser.length !== 0){
             const data = {
                 userId: actualUser[0]
@@ -143,7 +145,7 @@ export default function home(){
             
             for (let i in result){
                 const data1 = {
-                    chatId: result[i].chatId
+                    chatId: result[i].chatId,
                 }
                 
                 const response1 = await fetch('http://localhost:4000/getMessagesChat', {
@@ -157,76 +159,128 @@ export default function home(){
                 
                 if (!response1.ok) throw new Error('Error en la respuesta de la red');
                 const result2 = await response1.json();
+
+                result[i].messages = result2.messages
             }
-    
-            const chatList = document.getElementById('chatList');
-            if (!chatList) return;
-            chatList.innerHTML = "";
-            console.log(actualUser)
-            chats.forEach(chat => {
-                if (chat.userId == actualUser[0]) {
-                    const chatItem = document.createElement('div');
-                    chatItem.className = styles.chats;
-                    chatItem.textContent = chat.name;
-                    chatItem.onclick = () => selectChat(chat);
-                    chatList.appendChild(chatItem);
-                }
-            });
+
+            setChats(result)
         }
     }
+
+    function loadChatList() {
+        const chatList = document.getElementById('chatList');
+        if (!chatList) return;
+        chatList.innerHTML = "";
+        chats.forEach(chat => {
+            if (chat.userId == actualUser[0]) {
+                const chatItem = document.createElement('div');
+                chatItem.className = styles.chats;
+                chatItem.textContent = chat.name;
+                chatItem.onclick = () => selectChat(chat);
+                chatList.appendChild(chatItem);
+            }
+        });
+    }
+
+    useEffect(() => {
+        loadChatList();
+    }, [chats]);
     
     function selectChat(chat) {
         setContactName(chat.name);
-        setActualChat(chat.id)
+        setActualChat(chat.chatId)
+        getMessages(chat)
+        socket.emit("joinRoom", {room:chat.chatId})
+    }
+
+    async function getMessages(chat) {
+        const data1 = {
+            chatId: chat.chatId,
+        }
+        
+        const response1 = await fetch('http://localhost:4000/getMessagesChat', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data1),
+        });
+        
+        if (!response1.ok) throw new Error('Error en la respuesta de la red');
+        const result2 = await response1.json();
+
+        let i = 0
+        while (i <= chats.length && chats[i].chatId != chat.chatId) {
+            i++
+        }
+        if (chats[i] === chat.chatId) {
+            chats[i].messages = result2.messages
+        }
     }
     
     useEffect(() => {
-        loadChatList();
+        getChatList();
     }, [actualUser]);
-
-
-    function handleClick(){
-        // Aca va la lógica para redirigir, por ejemplo lógica login
-        // Push sirve para guardar el cambio en el historial de navegacion
-        if (cuenta >= 10 && cuenta < 15){
-            router.push("/ranking")
-        }
-        // Replace sirve para que no se guarde el historial, util en los login ya que se cierra sesión y no se vuelve a la pantalla de login
-        if (cuenta >= 15){
-            router.replace("/ranking")
-        } else {
-            alert("Contador insuficiente")
-        }
-    }
-
+    
+    const [newMessage, setNewMessage] = useState()
+    
     const sendMessage = () => {
         if (message.trim()) {
-            const newMessage = { 
-                id: Date.now(), // Se usa Date.now() para asegurar una ID única
-                variant: "user",
+            const newMessage = {
+                chatId: actualChat,
                 message: message.trim(),
-                name: actualUser[1]
+                userId: actualUser[0],
+                username: actualUser[1]
             };
-
-            insertMessages()
 
             setChats(prevChats => 
                 prevChats.map(chat => 
-                    chat.id === actualChat 
+                    chat.chatId === actualChat 
                         ? { ...chat, messages: [...chat.messages, newMessage] }
                         : chat
                 )
             );
+
+            socket.emit("sendMessage", {message: newMessage})
+
             setMessage("");
         }
     };
 
+    useEffect(() => {
+        if (actualUser[0] != undefined) {
+            if (newMessage.message.message.userId != actualUser[0]){
+                console.log(newMessage)
+                console.log(actualUser[0])
+    
+                setChats(prevChats => 
+                    prevChats.map(chat => 
+                        chat.chatId === actualChat 
+                            ? { ...chat, messages: [...chat.messages, newMessage.message.message] }
+                            : chat
+                    )
+                );
+            }
+        }
+    },[newMessage])
+
+
+    // function prueba(){
+    //     const newMessage = {
+    //         chatId: actualChat,
+    //         message: message.trim(),
+    //         userId: actualUser[0],
+    //         username: actualUser[1]
+    //     };
+    //     socket.emit("sendMessage", {message: newMessage})
+    // }
+
     async function insertMessages(){
         const data = {
-            name: actualUser[1],
-            userId: actualUser[0],
+            chatId: actualChat,
             message: message.trim(),
-            chatId: actualChat
+            userId: actualUser[0]
         }
 
         const response = await fetch('http://127.0.0.1:4000/insertMessage', {
@@ -238,9 +292,13 @@ export default function home(){
             body: JSON.stringify(data),
         });
 
-        if (!response.ok) throw new Error('Error en la respuesta de la red');
+        if (!response.ok) throw new Error('Error al enviar el mensaje');
 
         const result = await response.json();
+
+        console.log(result)
+
+        sendMessage()
     }
 
     const handleMessageChange = (e) => {
@@ -257,27 +315,28 @@ export default function home(){
         }
     }
 
-    useEffect(
-        () => {
-            // alert("Me ejecuto al principio")
+    const { socket, isConnected } = useSocket();
 
-        },
-        []
-    )
-    /* Se ejecuta cuando cambia una variable
-    useEffect(
-         ()=>{
-             setCuenta(cuenta + 5)
-         },[nombre]
-    ) */
+    
+    useEffect(() => {
+        if(!socket) return;
+        
+        socket.on("pingAll", (data) => {
+            console.log("Me llego el evento pingAll", data)
+        });
+        
+        socket.on("newMessage", (data) => {
+            if (data.message.message.userId != actualUser[0]){
+                console.log("Mensaje de la sala: ", data)
+                setNewMessage(data)
+            }
+        })
 
-    // useEffect(() => {
-    //     fetch('http://localhost:4000/')
-    //       .then((res) => res.json())
-    //       .then((data) => {
-    //         console.log(data)
-    //       })
-    // }, [])
+        return() => {
+            socket.off("message")
+        }
+    }, [socket, isConnected]);
+
     return(
         <>
             {
@@ -310,44 +369,50 @@ export default function home(){
                         }>
                             <h2 className={styles.whatsapp}>WhatsApp</h2>
                             <h3 className={styles.chattitle}>Chats</h3>
+                            <NewChat onClick={""} variant={theme}/>
                             <div id="chatList">
 
                             </div>
-                            <button onClick={closeSession}>Cerrar Sesión</button>
+                            <button onClick={closeSession} className={
+                                clsx({
+                                    [styles.closeSession]: theme == "light",
+                                    [styles.closeSession_dark]: theme == "dark"
+                                })
+                            }>Cerrar Sesión</button>
                         </div>
                         <div className={styles.topbar}>
                             <p className={styles.pheader}>{contactName}</p>
                             <Button_theme onClick={modoOscuro}/>
                         </div>
                         <div className={styles.chat} id="chat">
-                            {/* {chats.message.map((msg) =>
-                                <Message id={msg.id} variant={msg.variant} theme={theme} message={msg.message}/>
-                            )} */}
-
                             {chats.map(chat => (
-                                chat.messages.length > 0 && chat.id === actualChat ? (
-                                    chat.messages.map((msg) => (
-                                        <Message key={msg.id} variant={msg.variant} theme={theme} message={msg.message} name={chat.name}/>
-                                    ))
+                                chat.messages.length > 0 && chat.chatId === actualChat ? (
+                                    chat.messages.map((msg) => {
+                                        if (msg.userId === actualUser[0]) {
+                                            user = "user"
+                                        } else {
+                                            user = "other"
+                                        }
+                                        return <Message variant={user} theme={theme} message={msg.message} name={msg.username}/>
+                                    })
                                 ) : (
                                     <></>
                                 )
                             ))}
-
-
-                        
-                            {/*
-                            <Link href={"/ranking"}>
-                                <Button text="Con link"/>
-                            </Link>
-                            <Input id={2} variant={"primary"}/>
-                            <Input id={3} variant={"secondary"}/>
-                            <Input id={4}/> */}
                         </div>
                         <div className={styles.bottombar}>
-                                <Input id={"mensaje"} variant={theme} onChange={handleMessageChange} value={message}/>
-                                <Button onClick={sendMessage} variant={theme}/>
+                            <Input id={"mensaje"} variant={theme} onChange={handleMessageChange} value={message}/>
+                            <Button onClick={insertMessages} variant={theme}/>
+                            {/* <Button onClick={prueba}/> */}
                         </div>
+                    </div>
+                </>
+            }
+            {
+                newChat == true &&
+                <>
+                    <div className={styles.bodyLogin}>
+                        <InputNC
                     </div>
                 </>
             }
