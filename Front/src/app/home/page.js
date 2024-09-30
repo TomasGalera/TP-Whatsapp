@@ -192,6 +192,7 @@ export default function home(){
     }, [chats, newChat]);
     
     function selectChat(chat) {
+        socket.emit("leaveRoom", {room:actualChat})
         setContactName(chat.name);
         setActualChat(chat.chatId)
         // getMessages(chat)
@@ -367,16 +368,20 @@ export default function home(){
             
                     if (!response2.ok) throw new Error('Error al enviar el mensaje');
                     const result2 = await response2.json();
+                    console.log(newChatUser)
+                    socket.emit("newRoom", {username: newChatUser})
                 }
             }
-            setNewChatName("")
-            setNewChatUser("")
             setNewChat(false)
             getChatList()
+        } else {
+            alert("Completar la información")
         }
     }
 
     function handleNewChat() {
+        setNewChatName("")
+        setNewChatUser("")
         setNewChat(true)
     }
 
@@ -385,13 +390,23 @@ export default function home(){
         setNewChat(false)
     }
 
+    //MARK: Socket
     const { socket, isConnected } = useSocket();
-
+    
     useEffect(() => {
         if(!socket) return;
         
         socket.on("pingAll", (data) => {
             console.log("Me llego el evento pingAll", data)
+        });
+        
+        socket.on("newRoom2", (data) => {
+            if (data.user) {
+                console.log("New Room Created", data)
+                if (data.user = actualUser[1]){
+                    console.log("New Room Created, User: ", data)
+                }
+            }
         });
         
         socket.on("newMessage", (data) => {

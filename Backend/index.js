@@ -176,9 +176,22 @@ io.on("connection", (socket) => {
 		io.to(req.session.room).emit('chat-messages', { user: req.session.user, room: req.session.room });
 	});
 
+	socket.on('leaveRoom', data => {
+		req.session.room = data.room;
+		socket.leave(req.session.room)
+	})
+
 	socket.on('pingAll', data => {
 		console.log("PING ALL: ", data);
 		io.emit('pingAll', { event: "Ping to all", message: data });
+	});
+
+	socket.on('newRoom', data => {
+		if (data.username) {
+			req.session.username = data.username
+			console.log("New Room: ", data);
+			io.emit('newRoom2', { event: "New Room Created", user: data.username });
+		}
 	});
 
 	socket.on('sendMessage', data => {
