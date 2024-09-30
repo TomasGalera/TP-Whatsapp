@@ -20,8 +20,10 @@ export default function home(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [actualUser, setActualUser] = useState([]);
+    const [newChatUser, setNewChatUser] = useState("");
+    const [newChatName, setNewChatName] = useState("");
+    const [newChat, setNewChat] = useState(false);
 
-    let newChat = false
 
     let user = ""
 
@@ -50,14 +52,12 @@ export default function home(){
 
         const result = await response.json();
 
-        
-
         if (result === undefined || result.length === 0){
             const data1 = {
                 username: username,
                 password: password
             }
-    
+            
             const response1 = await fetch('http://localhost:4000/register', {
                 method: 'POST',
                 headers: {
@@ -66,7 +66,7 @@ export default function home(){
                 },
                 body: JSON.stringify(data1),
             });
-
+            
             const result1 = await response1.json();
             
             
@@ -77,6 +77,7 @@ export default function home(){
                 setPassword("")
             }
         } else {
+            console.log(result)
             alert("El usuario ya existe")
         }
     }
@@ -184,7 +185,7 @@ export default function home(){
 
     useEffect(() => {
         loadChatList();
-    }, [chats]);
+    }, [chats, newChat]);
     
     function selectChat(chat) {
         setContactName(chat.name);
@@ -315,9 +316,82 @@ export default function home(){
         }
     }
 
+    async function addChat() {
+        if (newChatUser != "" && newChatName != "") {
+            const data = {
+                username: newChatUser,
+            }
+    
+            const response = await fetch('http://localhost:4000/getUser', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            const result = await response.json();
+            console.log(result)
+            console.log(result[0].userId)
+            
+            if (result != undefined || result.length != 0){
+                const data3 = {
+                    name: newChatName,
+                    userId: actualUser[0]
+                }
+        
+                const response3 = await fetch('http://127.0.0.1:4000/insertChat', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data3),
+                });
+        
+                if (!response3.ok) throw new Error('Error al enviar el mensaje');
+                const result3 = await response3.json();
+        
+                if (result3) {
+                    console.log(result3)
+                    const data2 = {
+                        chatId: result3.result[0].chatId,
+                        userId1: actualUser[0],
+                        userId2: result[0].userId
+                    }
+            
+                    const response2 = await fetch('http://127.0.0.1:4000/insertChats_users', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data2),
+                    });
+            
+                    if (!response2.ok) throw new Error('Error al enviar el mensaje');
+                    const result2 = await response2.json();
+                }
+            }
+            setNewChatName("")
+            setNewChatUser("")
+            setNewChat(false)
+            getChatList()
+        }
+    }
+
+    function handleNewChat() {
+        setNewChat(true)
+    }
+
+    function cancelNewChat(){
+        setNewChatUser("")
+        setNewChat(false)
+    }
+
     const { socket, isConnected } = useSocket();
 
-    
     useEffect(() => {
         if(!socket) return;
         
@@ -358,7 +432,24 @@ export default function home(){
                 </>
             }
             {
-                actualUser != "" &&
+                newChat === true &&
+                <>
+                    <div className={styles.bodyNewChat}>
+                        <div className={styles.newChat}>
+                            <h2>Usuario del nuevo chat</h2>
+                            <InputNC type={"text"} onChange={(event) => setNewChatUser(event.target.value)} value={newChatUser} placeholder={"Ingrese el usuario"}/>
+                            <h2>Nombre del nuevo chat</h2>
+                            <InputNC type={"text"} onChange={(event) => setNewChatName(event.target.value)} value={newChatName} placeholder={"Ingrese el nombre"}/>
+                            <div>
+                                <button onClick={addChat}>Agregar chat</button>
+                                <button onClick={cancelNewChat}>Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            }
+            {
+                actualUser != "" && newChat == false &&
                 <>
                     <div className={styles.body}>
                         <div className={
@@ -369,7 +460,7 @@ export default function home(){
                         }>
                             <h2 className={styles.whatsapp}>WhatsApp</h2>
                             <h3 className={styles.chattitle}>Chats</h3>
-                            <NewChat onClick={""} variant={theme}/>
+                            <NewChat onClick={handleNewChat} variant={theme}/>
                             <div id="chatList">
 
                             </div>
@@ -403,19 +494,11 @@ export default function home(){
                         <div className={styles.bottombar}>
                             <Input id={"mensaje"} variant={theme} onChange={handleMessageChange} value={message}/>
                             <Button onClick={insertMessages} variant={theme}/>
-                            {/* <Button onClick={prueba}/> */}
                         </div>
                     </div>
                 </>
             }
-            {
-                newChat == true &&
-                <>
-                    <div className={styles.bodyLogin}>
-                        <InputNC />
-                    </div>
-                </>
-            }
+            
         </>
     )
 }

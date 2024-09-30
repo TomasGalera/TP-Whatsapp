@@ -65,15 +65,6 @@ app.get('/', (req, res) => {
 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
 });
 
-// app.post('/login', (req, res) => {
-// 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
-// });
-
-// app.delete('/login', (req, res) => {
-// 	console.log(`[REQUEST - ${req.method}] ${req.url}`);
-// 	res.send(null);
-// });
-
 app.get('/getUsers', async function(req,res) {
 	const result = await MySQL.realizarQuery(`SELECT * FROM UsersWA;`);
 	res.send(result);
@@ -136,11 +127,23 @@ app.post('/getMessagesChat', async function(req,res) {
 });
 
 app.post('/insertChat', async function(req, res) {
-	const userId = req.body.userId;
 	const name = req.body.name;
+	const userId = req.body.userId
+	const result = await MySQL.realizarQuery(`INSERT INTO Chats (name)
+	VALUES ("${name}")`);
+	const result2 = await MySQL.realizarQuery(`SELECT Chats.chatId FROM Chats INNER JOIN Chats_users WHERE name = "${name}" AND userId = ${userId};`)
+	res.send({message: 'Chat agregado a la tabla', result: result2});
+});
+
+app.post('/insertChats_users', async function(req, res) {
+	const chatId = req.body.chatId;
+	const userId1 = req.body.userId1;
+	const userId2 = req.body.userId2
 	try {
-		const result = MySQL.realizarQuery(`INSERT INTO Chats (userId, name)
-		VALUES ("${userId}", "${name}")`);
+		const result = await MySQL.realizarQuery(`INSERT INTO Chats_users (chatId, userId)
+		VALUES (${chatId}, ${userId1})`);
+		const result2 = await MySQL.realizarQuery(`INSERT INTO Chats_users (chatId, userId)
+		VALUES (${chatId}, ${userId2})`);
 		res.send({message: 'Chat agregado a la tabla', result: result});
 	  } catch (e) {
 		logMyErrors(e); // pasa el objeto de la excepción al manejador de errores
@@ -152,7 +155,7 @@ app.post('/insertMessage', async function(req, res) {
 	const chatId = req.body.chatId;
 	const message = req.body.message;
 	try {
-		const result = MySQL.realizarQuery(`INSERT INTO Messages (userId, message, chatId)
+		const result = await MySQL.realizarQuery(`INSERT INTO Messages (userId, message, chatId)
 		VALUES ("${userId}", "${message}", ${chatId})`);
 		res.send({message: 'Mensasje agregado a la tabla', result: result});
 	  } catch (e) {
