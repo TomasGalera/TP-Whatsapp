@@ -6,7 +6,7 @@ import Button_theme from "@/components/Button_theme";
 import InputLogin from "@/components/InputLogin";
 import NewChat from "@/components/NewChat";
 import InputNC from "@/components/InputNC";
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSocket } from "@/hooks/useSocket";
 import styles from "./page.module.css";
@@ -37,48 +37,52 @@ export default function home(){
     ]);
 
     async function register () {
-        const data = {
-            username: username,
-        }
-
-        const response = await fetch('http://localhost:4000/getUser', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-
-        if (result === undefined || result.length === 0){
-            const data1 = {
+        if (username != undefined && username != "" && password != undefined && password != "") {
+            const data = {
                 username: username,
-                password: password
             }
-            
-            const response1 = await fetch('http://localhost:4000/register', {
+    
+            const response = await fetch('http://localhost:4000/getUser', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data1),
+                body: JSON.stringify(data),
             });
-            
-            const result1 = await response1.json();
-            
-            
-            if (result1 != undefined || result1.length != 0){
-                setActualUser([result1.user[0].userId, result1.user[0].username])
-                alert("Registro realizado correctamente")
-                setUsername("")
-                setPassword("")
+    
+            const result = await response.json();
+    
+            if (result === undefined || result.length === 0){
+                const data1 = {
+                    username: username,
+                    password: password
+                }
+                
+                const response1 = await fetch('http://localhost:4000/register', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data1),
+                });
+                
+                const result1 = await response1.json();
+                
+                
+                if (result1 != undefined || result1.length != 0){
+                    setActualUser([result1.user[0].userId, result1.user[0].username])
+                    alert("Registro realizado correctamente")
+                    setUsername("")
+                    setPassword("")
+                }
+            } else {
+                console.log(result)
+                alert("El usuario ya existe")
             }
         } else {
-            console.log(result)
-            alert("El usuario ya existe")
+            alert("Complete la información")
         }
     }
     
@@ -190,7 +194,9 @@ export default function home(){
     function selectChat(chat) {
         setContactName(chat.name);
         setActualChat(chat.chatId)
-        getMessages(chat)
+        // getMessages(chat)
+        getChatList()
+        console.log(chats)
         socket.emit("joinRoom", {room:chat.chatId})
     }
 
@@ -265,17 +271,6 @@ export default function home(){
             }
         }
     },[newMessage])
-
-
-    // function prueba(){
-    //     const newMessage = {
-    //         chatId: actualChat,
-    //         message: message.trim(),
-    //         userId: actualUser[0],
-    //         username: actualUser[1]
-    //     };
-    //     socket.emit("sendMessage", {message: newMessage})
-    // }
 
     async function insertMessages(){
         const data = {
