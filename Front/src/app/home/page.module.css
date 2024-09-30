@@ -3,7 +3,8 @@
   width: 17vw;
   background-color: antiquewhite;
   position: fixed;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px 70px 15px;
+  overflow: auto;
 }
 
 .sidebar_dark {
@@ -12,7 +13,8 @@
   background-color: rgba(1, 172, 30, 0.3);
   color: white;
   position: fixed;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px 70px 15px;
+  overflow: auto;
 }
 
 .closeSession_dark {

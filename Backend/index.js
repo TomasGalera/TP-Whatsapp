@@ -187,11 +187,9 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on('newRoom', data => {
-		if (data.username) {
-			req.session.username = data.username
-			console.log("New Room: ", data);
-			io.emit('newRoom2', { event: "New Room Created", user: data.username });
-		}
+		req.session.username = data.username
+		console.log("New Room: ", data);
+		io.emit('newRoom', { event: "New Room Created", user: req.session.username });
 	});
 
 	socket.on('sendMessage', data => {

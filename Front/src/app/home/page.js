@@ -313,7 +313,7 @@ export default function home(){
     }
 
     async function addChat() {
-        if (newChatUser != "" && newChatName != "") {
+        if (newChatUser != "" && newChatName != "" && newChatName != actualUser[1]) {
             const data = {
                 username: newChatUser,
             }
@@ -390,6 +390,20 @@ export default function home(){
         setNewChat(false)
     }
 
+    function emitNewRoom(){
+        socket.emit("newRoom", {username: newChatUser})
+    }
+
+    const [newRoomUser, setNewRoomUser] = useState()
+
+    useEffect(() => {
+        if (newRoomUser != undefined) {
+            if (newRoomUser.user === actualUser[1]){
+                getChatList()
+            }
+        }
+    }, [newRoomUser]);
+
     //MARK: Socket
     const { socket, isConnected } = useSocket();
     
@@ -400,12 +414,11 @@ export default function home(){
             console.log("Me llego el evento pingAll", data)
         });
         
-        socket.on("newRoom2", (data) => {
-            if (data.user) {
+        socket.on("newRoom", (data) => {
+            setNewRoomUser(data)
+            if (data.user === actualUser[1]){
                 console.log("New Room Created", data)
-                if (data.user = actualUser[1]){
-                    console.log("New Room Created, User: ", data)
-                }
+                console.log("New Room Created, User: ", data)
             }
         });
         
@@ -453,6 +466,7 @@ export default function home(){
                             <div>
                                 <button onClick={addChat}>Agregar chat</button>
                                 <button onClick={cancelNewChat}>Cancelar</button>
+                                <Button onClick={emitNewRoom} variant={theme} message={"EMIT"}/>
                             </div>
                         </div>
                     </div>
