@@ -27,14 +27,7 @@ export default function home(){
 
     let user = ""
 
-    const [chats, setChats] = useState([
-        // { userId: 1, id: 1, name: "Juan Pérez", messages: [{id:1, variant: "user", message: "Hola como estas?", chatId: 1}, {id:2, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}, {id:3, variant: "other", message: "Hola como estas?", name:"Tomy", chatId: 1}]},
-        // { userId: 1, id: 2, name: "María García", messages: [] },
-        // { userId: 1, id: 3, name: "Carlos Rodríguez", messages: [] },
-        // { userId: 2, id: 4, name: "Juan", messages: [{id:1, variant: "user", message: "Hola como estas?"}, {id:3, variant: "other", message: "Hola como estas?"}]},
-        // { userId: 2, id: 5, name: "María García", messages: [] },
-        // { userId: 2, id: 6, name: "Carlos Rodríguez", messages: [] }
-    ]);
+    const [chats, setChats] = useState([]);
 
     async function register () {
         if (username != undefined && username != "" && password != undefined && password != "") {
@@ -199,32 +192,6 @@ export default function home(){
         getChatList()
         console.log(chats)
         socket.emit("joinRoom", {room:chat.chatId})
-    }
-
-    async function getMessages(chat) {
-        const data1 = {
-            chatId: chat.chatId,
-        }
-        
-        const response1 = await fetch('http://localhost:4000/getMessagesChat', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data1),
-        });
-        
-        if (!response1.ok) throw new Error('Error en la respuesta de la red');
-        const result2 = await response1.json();
-
-        let i = 0
-        while (i <= chats.length && chats[i].chatId != chat.chatId) {
-            i++
-        }
-        if (chats[i] === chat.chatId) {
-            chats[i].messages = result2.messages
-        }
     }
     
     useEffect(() => {
@@ -466,7 +433,6 @@ export default function home(){
                             <div>
                                 <button onClick={addChat}>Agregar chat</button>
                                 <button onClick={cancelNewChat}>Cancelar</button>
-                                <Button onClick={emitNewRoom} variant={theme} message={"EMIT"}/>
                             </div>
                         </div>
                     </div>
