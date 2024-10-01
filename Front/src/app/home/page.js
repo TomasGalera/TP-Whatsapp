@@ -6,8 +6,7 @@ import Button_theme from "@/components/Button_theme";
 import InputLogin from "@/components/InputLogin";
 import NewChat from "@/components/NewChat";
 import InputNC from "@/components/InputNC";
-import { act, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useSocket } from "@/hooks/useSocket";
 import styles from "./page.module.css";
 import clsx from "clsx";
@@ -241,28 +240,32 @@ export default function home(){
     },[newMessage])
 
     async function insertMessages(){
-        const data = {
-            chatId: actualChat,
-            message: message.trim(),
-            userId: actualUser[0]
+        if (message != "" && message != undefined) {
+            const data = {
+                chatId: actualChat,
+                message: message.trim(),
+                userId: actualUser[0]
+            }
+    
+            const response = await fetch('http://127.0.0.1:4000/insertMessage', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) throw new Error('Error al enviar el mensaje');
+    
+            const result = await response.json();
+    
+            console.log(result)
+    
+            sendMessage()
+        } else {
+            alert("No se puede enviar un mensaje vacío")
         }
-
-        const response = await fetch('http://127.0.0.1:4000/insertMessage', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) throw new Error('Error al enviar el mensaje');
-
-        const result = await response.json();
-
-        console.log(result)
-
-        sendMessage()
     }
 
     const handleMessageChange = (e) => {
